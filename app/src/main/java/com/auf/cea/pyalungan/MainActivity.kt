@@ -39,10 +39,10 @@ class MainActivity : AppCompatActivity() {
 
     }
 
-    override fun onResume() {
-        super.onResume()
-        binding.drawerLayout.openDrawer(GravityCompat.START)
-    }
+//    override fun onResume() {
+//        super.onResume()
+//        binding.drawerLayout.openDrawer(GravityCompat.START)
+//    }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
         return super.onCreateOptionsMenu(menu)
