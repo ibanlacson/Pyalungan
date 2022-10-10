@@ -9,8 +9,9 @@
     <fragment
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        app:defaultHost = "true"
+        app:defaultNavHost = "true"
         app:navGraph = "@navigation/main_navigation"
+        android:name="androidx.navigation.fragment.NavHostFragment"
         android:id="@+id/nav_host_fragment_container"/>
 
 </LinearLayout>
