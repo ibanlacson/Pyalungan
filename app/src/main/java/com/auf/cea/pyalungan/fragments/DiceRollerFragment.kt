@@ -27,7 +27,7 @@ class DiceRollerFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentDiceRollerBinding.inflate(inflater,container,false)
-        sharedPreferences = getSharedPreferences(PREFERENCE_NAME, AppCompatActivity.MODE_PRIVATE)
+//        sharedPreferences = getSharedPreferences(PREFERENCE_NAME, AppCompatActivity.MODE_PRIVATE)
         return binding.root
     }
 
@@ -35,7 +35,7 @@ class DiceRollerFragment : Fragment(), View.OnClickListener {
         super.onViewCreated(view, savedInstanceState)
 
 
-        luckyNumber = sharedPreferences.getInt(LUCKY_NUMBER,2)
+//        luckyNumber = sharedPreferences.getInt(LUCKY_NUMBER,2)
 
         binding.btnRoll.setOnClickListener(this)
         binding.btnResetLuckyNumber.setOnClickListener(this)
@@ -44,58 +44,58 @@ class DiceRollerFragment : Fragment(), View.OnClickListener {
     }
 
     override fun onClick(p0: View?) {
-
-        when (p0!!.id) {
-            (R.id.btn_roll) -> {
-                object : CountDownTimer(3000,200){
-                    override fun onTick(p0: Long) {
-                        when(diceCounter){
-                            (0) -> {
-                                binding.imgDice.setImageResource(R.drawable.die_1)
-                                diceCounter++
-                            }
-                            (1) -> {
-                                binding.imgDice.setImageResource(R.drawable.die_2)
-                                diceCounter++
-                            }
-                            (2) -> {
-                                binding.imgDice.setImageResource(R.drawable.die_3)
-                                diceCounter++
-                            }
-                            (3) -> {
-                                binding.imgDice.setImageResource(R.drawable.die_4)
-                                diceCounter++
-                            }
-                            (4) -> {
-                                binding.imgDice.setImageResource(R.drawable.die_5)
-                                diceCounter++
-                            }
-                            (5) -> {
-                                binding.imgDice.setImageResource(R.drawable.die_6)
-                                diceCounter = 0
-                            }
-                        }
-                    }
-
-                    override fun onFinish() {
-                        val diceRolled = DRHelper.diceRoll()
-                        binding.imgDice.setImageResource(diceRolled)
-                        val result = DRHelper.evaluateResult(diceRolled,luckyNumber)
-                        binding.txtResult.text = result
-                        Log.d("LUCKY NUMBER:",luckyNumber.toString())
-                    }
-                }.start()
-
-            }
-            (R.id.btn_reset_lucky_number) -> {
-                luckyNumber = DRHelper.resetLuckyNumber()
-                val editor = sharedPreferences.edit()
-                editor.putInt(LUCKY_NUMBER,luckyNumber)
-                editor.apply()
-                Toast.makeText(this@DiceRollActivity,"Lucky Number has been reset!", Toast.LENGTH_SHORT).show()
-            }
-            (R.id.btn_return) -> {}
-        }
+//
+//        when (p0!!.id) {
+//            (R.id.btn_roll) -> {
+//                object : CountDownTimer(3000,200){
+//                    override fun onTick(p0: Long) {
+//                        when(diceCounter){
+//                            (0) -> {
+//                                binding.imgDice.setImageResource(R.drawable.die_1)
+//                                diceCounter++
+//                            }
+//                            (1) -> {
+//                                binding.imgDice.setImageResource(R.drawable.die_2)
+//                                diceCounter++
+//                            }
+//                            (2) -> {
+//                                binding.imgDice.setImageResource(R.drawable.die_3)
+//                                diceCounter++
+//                            }
+//                            (3) -> {
+//                                binding.imgDice.setImageResource(R.drawable.die_4)
+//                                diceCounter++
+//                            }
+//                            (4) -> {
+//                                binding.imgDice.setImageResource(R.drawable.die_5)
+//                                diceCounter++
+//                            }
+//                            (5) -> {
+//                                binding.imgDice.setImageResource(R.drawable.die_6)
+//                                diceCounter = 0
+//                            }
+//                        }
+//                    }
+//
+//                    override fun onFinish() {
+//                        val diceRolled = DRHelper.diceRoll()
+//                        binding.imgDice.setImageResource(diceRolled)
+//                        val result = DRHelper.evaluateResult(diceRolled,luckyNumber)
+//                        binding.txtResult.text = result
+//                        Log.d("LUCKY NUMBER:",luckyNumber.toString())
+//                    }
+//                }.start()
+//
+//            }
+//            (R.id.btn_reset_lucky_number) -> {
+//                luckyNumber = DRHelper.resetLuckyNumber()
+//                val editor = sharedPreferences.edit()
+//                editor.putInt(LUCKY_NUMBER,luckyNumber)
+//                editor.apply()
+//                Toast.makeText(this@DiceRollActivity,"Lucky Number has been reset!", Toast.LENGTH_SHORT).show()
+//            }
+//            (R.id.btn_return) -> {}
+//        }
     }
 
 }
