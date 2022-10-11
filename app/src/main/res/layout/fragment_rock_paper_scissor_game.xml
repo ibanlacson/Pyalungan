@@ -90,7 +90,7 @@
         android:layout_height="wrap_content"
         android:layout_marginBottom="40dp"
         android:orientation="horizontal"
-        app:layout_constraintBottom_toTopOf="@+id/button"
+        app:layout_constraintBottom_toTopOf="@+id/btn_return"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent">
 
@@ -123,7 +123,7 @@
     </LinearLayout>
 
     <Button
-        android:id="@+id/button"
+        android:id="@+id/btn_return"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:backgroundTint="#F44336"
