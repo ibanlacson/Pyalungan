@@ -2,6 +2,7 @@ package com.auf.cea.pyalungan
 
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
@@ -11,8 +12,9 @@ import androidx.navigation.ui.navigateUp
 import androidx.navigation.ui.setupActionBarWithNavController
 import androidx.navigation.ui.setupWithNavController
 import com.auf.cea.pyalungan.databinding.ActivityMainBinding
+import com.auf.cea.pyalungan.fragments.UserDetailsFragment
 
-class MainActivity : AppCompatActivity() {
+class MainActivity : AppCompatActivity(), UserDetailsFragment.UserDetailsInterface {
     private lateinit var binding : ActivityMainBinding
     private lateinit var appBarConfiguration: AppBarConfiguration
 
@@ -51,5 +53,9 @@ class MainActivity : AppCompatActivity() {
     override fun onSupportNavigateUp(): Boolean {
         val navController = findNavController(R.id.nav_host_fragment_container)
         return navController.navigateUp(appBarConfiguration) || super.onSupportNavigateUp()
+    }
+
+    override fun onEdit(username: String) {
+        Log.d(MainActivity::class.java.simpleName, username)
     }
 }
