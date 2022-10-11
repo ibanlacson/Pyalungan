@@ -85,4 +85,8 @@ class MainActivity : AppCompatActivity(),
         override fun openNavDrawer() {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
+
+        override fun returnHome() {
+            findNavController(R.id.nav_host_fragment_container).navigate(R.id.nav_home)
+        }
 }

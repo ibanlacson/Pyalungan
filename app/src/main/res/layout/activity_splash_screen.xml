@@ -44,7 +44,7 @@
             android:text="AFTAB | ARBOTANTE | LACSON| MACATULA"
             android:textAlignment="center"
             android:textColor="#FFFFFF"
-            android:textSize="18dp"
+            android:textSize="17dp"
             android:textStyle="italic" />
 
     </LinearLayout>

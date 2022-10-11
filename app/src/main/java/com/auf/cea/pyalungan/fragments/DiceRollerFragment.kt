@@ -25,7 +25,7 @@ class DiceRollerFragment : Fragment(), View.OnClickListener {
     private var diceCounter = 0
 
     interface DiceRollerFragmentInterface{
-        fun openNavDrawer()
+        fun returnHome()
     }
 
     override fun onAttach(context: Context) {
@@ -114,7 +114,7 @@ class DiceRollerFragment : Fragment(), View.OnClickListener {
                 Toast.makeText(requireContext(),"Lucky Number has been reset!", Toast.LENGTH_SHORT).show()
             }
             (R.id.btn_return) -> {
-                diceRollerFragmentInterface.openNavDrawer()
+                diceRollerFragmentInterface.returnHome()
             }
         }
     }
