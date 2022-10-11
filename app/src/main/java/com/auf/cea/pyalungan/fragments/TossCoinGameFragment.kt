@@ -1,5 +1,7 @@
 package com.auf.cea.pyalungan.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
@@ -12,9 +14,19 @@ import com.auf.cea.pyalungan.helperclasses.TCHelper
 
 class TossCoinGameFragment : Fragment(), View.OnClickListener {
     private lateinit var  binding : FragmentTossCoinGameBinding
+    private lateinit var  tossCoinGameFragmentInterface : TossCoinGameFragmentInterface
     private var tossedCoin =  -1
     private var tossResult = ""
     private var fauxCoin = 0
+
+    interface TossCoinGameFragmentInterface {
+        fun openNavDrawer()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        tossCoinGameFragmentInterface = context as TossCoinGameFragmentInterface
+    }
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -40,18 +52,32 @@ class TossCoinGameFragment : Fragment(), View.OnClickListener {
         when(p0!!.id) {
             (R.id.btn_replay) -> {
                 object : CountDownTimer(3000,200) {
+
                     override fun onTick(p0: Long) {
+                        var tossAnimate:String = ""
                         when (fauxCoin) {
                             (0) -> {
                                 binding.imgCoin.setImageResource(R.drawable.ic_crown)
                                 fauxCoin++
+                                tossAnimate = "Tossing."
                             }
                             (1) -> {
                                 binding.imgCoin.setImageResource(R.drawable.ic_square)
+                                fauxCoin++
+                                tossAnimate = "Tossing.."
+                            }
+                            (2) -> {
+                                binding.imgCoin.setImageResource(R.drawable.ic_crown)
+                                fauxCoin++
+                                tossAnimate = "Tossing..."
+                            }
+                            (3) -> {
+                                binding.imgCoin.setImageResource(R.drawable.ic_square)
                                 fauxCoin = 0
+                                tossAnimate = "Tossing."
                             }
                         }
-                        binding.txtTossResult.text = "TOSSING THE COIN"
+                        binding.txtTossResult.text = tossAnimate
                     }
 
                     override fun onFinish() {
@@ -62,7 +88,9 @@ class TossCoinGameFragment : Fragment(), View.OnClickListener {
                     }
                 }.start()
             }
-            (R.id.btn_return) -> {}
+            (R.id.btn_return) -> {
+                tossCoinGameFragmentInterface.openNavDrawer()
+            }
         }
     }
 }

@@ -2,6 +2,7 @@ package com.auf.cea.pyalungan.fragments
 
 import android.content.Context
 import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -10,12 +11,15 @@ import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
 import androidx.appcompat.app.AlertDialog
+import com.auf.cea.pyalungan.PREFERENCE_NAME
 import com.auf.cea.pyalungan.R
+import com.auf.cea.pyalungan.USER_NAME
 import com.auf.cea.pyalungan.databinding.FragmentUserDetailsBinding
 
 class UserDetailsFragment : Fragment(), View.OnClickListener {
     private lateinit var binding : FragmentUserDetailsBinding
     private lateinit var userDetailsInterface: UserDetailsInterface
+    private lateinit var sharedPreferences: SharedPreferences
 
     interface UserDetailsInterface{
         fun onEdit(username:String)
@@ -32,11 +36,13 @@ class UserDetailsFragment : Fragment(), View.OnClickListener {
         savedInstanceState: Bundle?
     ): View? {
         binding = FragmentUserDetailsBinding.inflate(inflater,container,false)
+        sharedPreferences = requireActivity().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
         return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        binding.txtName.text = String.format("Name:  %s",sharedPreferences.getString(USER_NAME,""))
         binding.btnEditUserDetails.setOnClickListener(this)
 
     }
@@ -54,6 +60,7 @@ class UserDetailsFragment : Fragment(), View.OnClickListener {
         editLayout.orientation = LinearLayout.VERTICAL
 
         val editUsername = EditText(activity)
+        editUsername.setText(sharedPreferences.getString(USER_NAME,""))
         editUsername.hint = "Username"
 
         editLayout.addView(editUsername)
@@ -68,6 +75,11 @@ class UserDetailsFragment : Fragment(), View.OnClickListener {
             val username = editUsername.text.toString()
 
             userDetailsInterface.onEdit(username)
+            binding.txtName.text =  String.format("Name:  %s",username)
+            val editor = sharedPreferences.edit()
+            editor.putString(USER_NAME,username)
+            editor.apply()
+
             dialog.dismiss()
         })
 

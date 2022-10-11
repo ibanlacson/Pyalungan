@@ -1,5 +1,6 @@
 package com.auf.cea.pyalungan.fragments
 
+import android.content.Context
 import android.os.Bundle
 import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
@@ -13,8 +14,18 @@ import com.auf.cea.pyalungan.helperclasses.RPCHelper
 class RockPaperScissorGameFragment : Fragment(), View.OnClickListener {
 
     private lateinit var binding : FragmentRockPaperScissorGameBinding
+    private lateinit var rockPaperScissorsGameFragmentInterface: RockPaperScissorGameFragmentInterface
     private var computerPick:Int = -1
     private var playerPickID:Int = -1
+
+    interface RockPaperScissorGameFragmentInterface {
+        fun openNavDrawer()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        rockPaperScissorsGameFragmentInterface = context as RockPaperScissorGameFragmentInterface
+    }
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -30,6 +41,7 @@ class RockPaperScissorGameFragment : Fragment(), View.OnClickListener {
         binding.btnPaper.setOnClickListener(this)
         binding.btnScissors.setOnClickListener(this)
         binding.btnStone.setOnClickListener(this)
+        binding.btnReturn.setOnClickListener(this)
     }
 
     override fun onClick(p0: View?) {
@@ -42,6 +54,9 @@ class RockPaperScissorGameFragment : Fragment(), View.OnClickListener {
             }
             (R.id.btn_stone) -> {
                 computerPicks("Rock")
+            }
+            (R.id.btn_return) -> {
+                rockPaperScissorsGameFragmentInterface.openNavDrawer()
             }
         }
     }
