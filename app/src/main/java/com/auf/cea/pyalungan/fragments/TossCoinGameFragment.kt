@@ -20,7 +20,7 @@ class TossCoinGameFragment : Fragment(), View.OnClickListener {
     private var fauxCoin = 0
 
     interface TossCoinGameFragmentInterface {
-        fun openNavDrawer()
+        fun returnHome()
     }
 
     override fun onAttach(context: Context) {
@@ -89,7 +89,7 @@ class TossCoinGameFragment : Fragment(), View.OnClickListener {
                 }.start()
             }
             (R.id.btn_return) -> {
-                tossCoinGameFragmentInterface.openNavDrawer()
+                tossCoinGameFragmentInterface.returnHome()
             }
         }
     }

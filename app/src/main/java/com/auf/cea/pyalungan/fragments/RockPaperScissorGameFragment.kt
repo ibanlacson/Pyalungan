@@ -19,7 +19,7 @@ class RockPaperScissorGameFragment : Fragment(), View.OnClickListener {
     private var playerPickID:Int = -1
 
     interface RockPaperScissorGameFragmentInterface {
-        fun openNavDrawer()
+        fun returnHome()
     }
 
     override fun onAttach(context: Context) {
@@ -56,7 +56,7 @@ class RockPaperScissorGameFragment : Fragment(), View.OnClickListener {
                 computerPicks("Rock")
             }
             (R.id.btn_return) -> {
-                rockPaperScissorsGameFragmentInterface.openNavDrawer()
+                rockPaperScissorsGameFragmentInterface.returnHome()
             }
         }
     }
