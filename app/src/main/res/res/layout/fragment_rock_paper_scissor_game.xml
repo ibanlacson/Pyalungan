@@ -1,0 +1,138 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#DCDDE1"
+    tools:context=".fragments.RockPaperScissorGameFragment">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="COMPUTER PICK:"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textStyle="bold"
+        android:textColor="#17264E"
+        app:layout_constraintBottom_toTopOf="@+id/linearLayout"
+        app:layout_constraintStart_toStartOf="@+id/linearLayout" />
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="YOUR PICK:"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textColor="#17264E"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="@+id/linearLayout"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <TextView
+        android:id="@+id/txt_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Rock paper scissors \ngame"
+        android:textAllCaps="true"
+        android:textAlignment="center"
+        android:textSize="25sp"
+        android:textColor="#17264E"
+        android:textStyle="bold"
+        android:paddingLeft="15dp"
+        android:paddingRight="15dp"
+        app:layout_constraintBottom_toTopOf="@+id/textView3"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
+
+    <LinearLayout
+        android:id="@+id/linearLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="75dp"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/img_computer_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginRight="40dp"
+            android:contentDescription="computer play"
+            android:src="@drawable/ic_scissors" />
+
+        <ImageView
+            android:id="@+id/img_player_play"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:contentDescription="player play"
+            android:src="@drawable/ic_scissors" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:labelFor="@id/btn_group"
+        android:text="Choose your pick:"
+        android:textAllCaps="true"
+        android:textSize="20sp"
+        android:textColor="#17264E"
+        android:textStyle="bold"
+        app:layout_constraintBottom_toTopOf="@+id/btn_group"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+    <LinearLayout
+        android:id="@+id/btn_group"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="40dp"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toTopOf="@+id/btn_return"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <ImageButton
+            android:id="@+id/btn_stone"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginRight="15dp"
+            android:contentDescription="stone button"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_stone" />
+
+        <ImageButton
+            android:id="@+id/btn_paper"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:layout_marginRight="15dp"
+            android:contentDescription="paper button"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_paper" />
+
+        <ImageButton
+            android:id="@+id/btn_scissors"
+            android:layout_width="120dp"
+            android:layout_height="120dp"
+            android:contentDescription="scissors button"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_scissors" />
+
+    </LinearLayout>
+
+    <Button
+        android:id="@+id/btn_return"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:backgroundTint="#C00000"
+        android:text="Return"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>
