@@ -31,10 +31,10 @@ class DRHelper {
                 (R.drawable.die_5) -> {dice = 5}
                 (R.drawable.die_6) -> {dice = 6}
             }
-            if(dice == luckyNumber) {
-                return "You got lucky and won!"
+            return if(dice == luckyNumber) {
+                "You got lucky and won!"
             } else {
-                return "Ouch! Sayang! Better luck next time boss!"
+                "Ouch! Sayang! Better luck next time boss!"
             }
         }
     }
