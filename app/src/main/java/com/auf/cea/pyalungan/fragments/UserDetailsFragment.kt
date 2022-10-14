@@ -1,60 +1,96 @@
 package com.auf.cea.pyalungan.fragments
 
+import android.content.Context
+import android.content.DialogInterface
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.EditText
+import android.widget.LinearLayout
+import androidx.appcompat.app.AlertDialog
+import com.auf.cea.pyalungan.PREFERENCE_NAME
 import com.auf.cea.pyalungan.R
+import com.auf.cea.pyalungan.USER_NAME
+import com.auf.cea.pyalungan.databinding.FragmentUserDetailsBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class UserDetailsFragment : Fragment(), View.OnClickListener {
+    private lateinit var binding : FragmentUserDetailsBinding
+    private lateinit var userDetailsInterface: UserDetailsInterface
+    private lateinit var sharedPreferences: SharedPreferences
 
-/**
- * A simple [Fragment] subclass.
- * Use the [UserDetailsFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class UserDetailsFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    interface UserDetailsInterface{
+        fun onEdit(username:String)
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        userDetailsInterface = context as UserDetailsInterface
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_user_details, container, false)
+        binding = FragmentUserDetailsBinding.inflate(inflater,container,false)
+        sharedPreferences = requireActivity().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment UserDetailsFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            UserDetailsFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.txtName.text = String.format("Name:  %s",sharedPreferences.getString(USER_NAME,""))
+        binding.btnEditUserDetails.setOnClickListener(this)
+
+    }
+
+    override fun onClick(p0: View?) {
+        when(p0!!.id){
+            (R.id.btn_edit_user_details) -> {
+                createAlertDialog()
             }
+        }
+    }
+
+    private fun createAlertDialog(){
+        val editLayout = LinearLayout(activity)
+        editLayout.orientation = LinearLayout.VERTICAL
+
+        val editUsername = EditText(activity)
+        editUsername.setText(sharedPreferences.getString(USER_NAME,""))
+        editUsername.hint = "Username"
+
+        editLayout.addView(editUsername)
+        editLayout.setPadding(50,60,50,60)
+
+
+        val alertDialog : AlertDialog.Builder? = activity?.let { AlertDialog.Builder(it) }
+        alertDialog?.setTitle("Edit user details")
+        alertDialog?.setView(editLayout)
+
+        alertDialog?.setPositiveButton("Save", DialogInterface.OnClickListener{dialog,_ ->
+            val username = editUsername.text.toString()
+
+            userDetailsInterface.onEdit(username)
+
+            // Change the username on the fragment
+            binding.txtName.text =  String.format("Name:  %s",username)
+
+            // Change the username saved on sharedPreference
+            val editor = sharedPreferences.edit()
+            editor.putString(USER_NAME,username)
+            editor.apply()
+
+            dialog.dismiss()
+        })
+
+        alertDialog?.setNegativeButton("Cancel", DialogInterface.OnClickListener{dialog,_ ->
+            dialog.dismiss()
+        })
+
+        alertDialog?.show()
     }
 }

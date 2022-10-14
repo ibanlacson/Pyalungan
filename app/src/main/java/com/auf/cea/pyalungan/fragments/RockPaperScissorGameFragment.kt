@@ -1,60 +1,109 @@
 package com.auf.cea.pyalungan.fragments
 
+import android.content.Context
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.auf.cea.pyalungan.R
+import com.auf.cea.pyalungan.databinding.FragmentRockPaperScissorGameBinding
+import com.auf.cea.pyalungan.helperclasses.RPCHelper
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class RockPaperScissorGameFragment : Fragment(), View.OnClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [RockPaperScissorGameFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class RockPaperScissorGameFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding : FragmentRockPaperScissorGameBinding
+    private lateinit var rockPaperScissorsGameFragmentInterface: RockPaperScissorGameFragmentInterface
+    private var computerPick:Int = -1
+    private var playerPickID:Int = -1
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    interface RockPaperScissorGameFragmentInterface {
+        fun returnHome()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        rockPaperScissorsGameFragmentInterface = context as RockPaperScissorGameFragmentInterface
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_rock_paper_scissor_game, container, false)
+        binding = FragmentRockPaperScissorGameBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment RockPaperScissorGameFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            RockPaperScissorGameFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.btnPaper.setOnClickListener(this)
+        binding.btnScissors.setOnClickListener(this)
+        binding.btnStone.setOnClickListener(this)
+        binding.btnReturn.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        when(p0!!.id) {
+            (R.id.btn_paper) -> {
+                computerPicks("Paper")
             }
+            (R.id.btn_scissors) -> {
+                computerPicks("Scissors")
+            }
+            (R.id.btn_stone) -> {
+                computerPicks("Rock")
+            }
+            (R.id.btn_return) -> {
+                rockPaperScissorsGameFragmentInterface.returnHome()
+            }
+        }
+    }
+    private fun updateDisplay(playerPick:String):Int {
+        when(playerPick) {
+            ("Rock") -> {
+                binding.imgPlayerPlay.setImageResource(R.drawable.ic_stone)
+                return R.drawable.ic_stone
+            }
+            ("Paper") -> {
+                binding.imgPlayerPlay.setImageResource(R.drawable.ic_paper)
+                return R.drawable.ic_paper
+            }
+            ("Scissors") -> {
+                binding.imgPlayerPlay.setImageResource(R.drawable.ic_scissors)
+                return R.drawable.ic_scissors
+            }
+            else -> {
+                binding.imgPlayerPlay.setImageResource(R.drawable.ic_stone)
+                return R.drawable.ic_stone
+            }
+        }
+    }
+
+    private fun computerPicks(playerPick: String){
+        object : CountDownTimer(3000, 200){
+            override fun onTick(p0: Long) {
+                val imgID = RPCHelper.getImage()
+                binding.imgComputerPlay.setImageResource(imgID)
+                computerPick = imgID
+
+                binding.btnStone.isEnabled = false
+                binding.btnPaper.isEnabled = false
+                binding.btnScissors.isEnabled = false
+
+            }
+
+            override fun onFinish() {
+                updateDisplay(playerPick)
+                playerPickID = (updateDisplay(playerPick))
+                val result = RPCHelper.evaluateResult(computerPick,playerPickID)
+                //Log.d("RESULT:", result)
+                binding.txtResult.text = result
+                binding.btnStone.isEnabled = true
+                binding.btnPaper.isEnabled = true
+                binding.btnScissors.isEnabled = true
+            }
+        }.start()
     }
 }

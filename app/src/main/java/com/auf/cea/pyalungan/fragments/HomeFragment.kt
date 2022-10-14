@@ -1,60 +1,69 @@
 package com.auf.cea.pyalungan.fragments
 
+import android.content.Context
+import android.content.Intent
+import android.content.SharedPreferences
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.auf.cea.pyalungan.EnterUserActivity
+import com.auf.cea.pyalungan.PREFERENCE_NAME
 import com.auf.cea.pyalungan.R
+import com.auf.cea.pyalungan.USER_NAME
+import com.auf.cea.pyalungan.databinding.FragmentHomeBinding
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class HomeFragment : Fragment(), View.OnClickListener {
 
-/**
- * A simple [Fragment] subclass.
- * Use the [HomeFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class HomeFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    private lateinit var binding : FragmentHomeBinding
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var homeFragmentInterface: HomeFragmentInterface
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    interface HomeFragmentInterface{
+        fun openNavDrawer()
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        homeFragmentInterface = context as HomeFragmentInterface
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_home, container, false)
+        binding =  FragmentHomeBinding.inflate(inflater,container,false)
+        sharedPreferences = requireActivity().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
+
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment HomeFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            HomeFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+        binding.welcomeMessage.text = String.format("Hi, %s! Let's Play!",sharedPreferences.getString(
+            USER_NAME,""))
+        binding.btnChoose.setOnClickListener(this)
+        binding.btnLogout.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        when (p0!!.id) {
+            (R.id.btn_choose) -> {
+               homeFragmentInterface.openNavDrawer()
             }
+            (R.id.btn_logout) ->{
+                val editor = sharedPreferences.edit()
+                editor.clear()
+                editor.apply()
+
+                val intent = Intent(requireContext(),EnterUserActivity::class.java)
+                intent.flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TASK
+                startActivity(intent)
+
+            }
+        }
     }
 }
+

@@ -1,60 +1,95 @@
 package com.auf.cea.pyalungan.fragments
 
+import android.annotation.SuppressLint
+import android.content.Context
 import android.os.Bundle
+import android.os.CountDownTimer
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.auf.cea.pyalungan.R
+import com.auf.cea.pyalungan.databinding.FragmentTossCoinGameBinding
+import com.auf.cea.pyalungan.helperclasses.TCHelper
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class TossCoinGameFragment : Fragment(), View.OnClickListener {
+    private lateinit var  binding : FragmentTossCoinGameBinding
+    private lateinit var  tossCoinGameFragmentInterface : TossCoinGameFragmentInterface
+    private var tossedCoin =  -1
+    private var tossResult = ""
+    private var fauxCoin = 0
 
-/**
- * A simple [Fragment] subclass.
- * Use the [TossCoinGameFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class TossCoinGameFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
-
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    interface TossCoinGameFragmentInterface {
+        fun returnHome()
     }
 
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        tossCoinGameFragmentInterface = context as TossCoinGameFragmentInterface
+    }
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_toss_coin_game, container, false)
+        binding = FragmentTossCoinGameBinding.inflate(inflater,container,false)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment TossCoinGameFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            TossCoinGameFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        tossedCoin = TCHelper.tossCoin()
+        binding.imgCoin.setImageResource(tossedCoin)
+        tossResult = TCHelper.evaluateResult(tossedCoin)
+        binding.txtTossResult.text = tossResult
+
+        binding.btnReplay.setOnClickListener(this)
+        binding.btnReturn.setOnClickListener(this)
+    }
+
+    override fun onClick(p0: View?) {
+        when(p0!!.id) {
+            (R.id.btn_replay) -> {
+                object : CountDownTimer(3000,200) {
+                    override fun onTick(p0: Long) {
+                        var tossAnimate:String = ""
+                        when (fauxCoin) {
+                            (0) -> {
+                                binding.imgCoin.setImageResource(R.drawable.ic_crown)
+                                fauxCoin++
+                                tossAnimate = "Tossing."
+                            }
+                            (1) -> {
+                                binding.imgCoin.setImageResource(R.drawable.ic_square)
+                                fauxCoin++
+                                tossAnimate = "Tossing.."
+                            }
+                            (2) -> {
+                                binding.imgCoin.setImageResource(R.drawable.ic_crown)
+                                fauxCoin++
+                                tossAnimate = "Tossing..."
+                            }
+                            (3) -> {
+                                binding.imgCoin.setImageResource(R.drawable.ic_square)
+                                fauxCoin = 0
+                                tossAnimate = "Tossing."
+                            }
+                        }
+                        binding.txtTossResult.text = tossAnimate
+                    }
+
+                    override fun onFinish() {
+                        tossedCoin = TCHelper.tossCoin()
+                        binding.imgCoin.setImageResource(tossedCoin)
+                        tossResult = TCHelper.evaluateResult(tossedCoin)
+                        binding.txtTossResult.text = tossResult
+                    }
+                }.start()
             }
+            (R.id.btn_return) -> {
+                tossCoinGameFragmentInterface.returnHome()
+            }
+        }
     }
 }

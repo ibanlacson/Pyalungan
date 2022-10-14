@@ -1,60 +1,122 @@
 package com.auf.cea.pyalungan.fragments
 
+import android.content.Context
+import android.content.SharedPreferences
 import android.os.Bundle
+import android.os.CountDownTimer
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import androidx.appcompat.app.AppCompatActivity
+import com.auf.cea.pyalungan.LUCKY_NUMBER
+import com.auf.cea.pyalungan.PREFERENCE_NAME
 import com.auf.cea.pyalungan.R
+import com.auf.cea.pyalungan.databinding.FragmentDiceRollerBinding
+import com.auf.cea.pyalungan.helperclasses.DRHelper
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
+class DiceRollerFragment : Fragment(), View.OnClickListener {
+    private lateinit var binding : FragmentDiceRollerBinding
+    private lateinit var sharedPreferences: SharedPreferences
+    private lateinit var diceRollerFragmentInterface: DiceRollerFragmentInterface
+    private var luckyNumber = -1
+    private var diceCounter = 0
 
-/**
- * A simple [Fragment] subclass.
- * Use the [DiceRollerFragment.newInstance] factory method to
- * create an instance of this fragment.
- */
-class DiceRollerFragment : Fragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
+    interface DiceRollerFragmentInterface{
+        fun returnHome()
+    }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
-        }
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        diceRollerFragmentInterface = context as DiceRollerFragmentInterface
     }
 
     override fun onCreateView(
-        inflater: LayoutInflater, container: ViewGroup?,
+        inflater: LayoutInflater,
+        container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_dice_roller, container, false)
+        binding = FragmentDiceRollerBinding.inflate(inflater,container,false)
+        sharedPreferences = requireActivity().getSharedPreferences(PREFERENCE_NAME,Context.MODE_PRIVATE)
+        return binding.root
     }
 
-    companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment DiceRollerFragment.
-         */
-        // TODO: Rename and change types and number of parameters
-        @JvmStatic
-        fun newInstance(param1: String, param2: String) =
-            DiceRollerFragment().apply {
-                arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
-                }
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+
+        luckyNumber = sharedPreferences.getInt(LUCKY_NUMBER,2)
+
+        binding.btnRoll.setOnClickListener(this)
+        binding.btnResetLuckyNumber.setOnClickListener(this)
+        binding.btnReturn.setOnClickListener(this)
+
     }
+
+    override fun onClick(p0: View?) {
+        when (p0!!.id) {
+            (R.id.btn_roll) -> {
+                object : CountDownTimer(3000,200){
+                    override fun onTick(p0: Long) {
+                        var rollingAnimate:String = ""
+                        when(diceCounter){
+                            (0) -> {
+                                binding.imgDice.setImageResource(R.drawable.die_1)
+                                diceCounter++
+                                rollingAnimate = "Rolling."
+                            }
+                            (1) -> {
+                                binding.imgDice.setImageResource(R.drawable.die_2)
+                                diceCounter++
+                                rollingAnimate = "Rolling.."
+                            }
+                            (2) -> {
+                                binding.imgDice.setImageResource(R.drawable.die_3)
+                                diceCounter++
+                                rollingAnimate = "Rolling..."
+                            }
+                            (3) -> {
+                                binding.imgDice.setImageResource(R.drawable.die_4)
+                                diceCounter++
+                                rollingAnimate = "Rolling."
+                            }
+                            (4) -> {
+                                binding.imgDice.setImageResource(R.drawable.die_5)
+                                diceCounter++
+                                rollingAnimate = "Rolling.."
+                            }
+                            (5) -> {
+                                binding.imgDice.setImageResource(R.drawable.die_6)
+                                diceCounter = 0
+                                rollingAnimate = "Rolling..."
+                            }
+                        }
+                        binding.txtResult.text=rollingAnimate
+                    }
+
+                    override fun onFinish() {
+                        val diceRolled = DRHelper.diceRoll()
+                        binding.imgDice.setImageResource(diceRolled)
+                        val result = DRHelper.evaluateResult(diceRolled,luckyNumber)
+                        binding.txtResult.text = result
+                        Log.d("LUCKY NUMBER:",luckyNumber.toString())
+                    }
+                }.start()
+
+            }
+            (R.id.btn_reset_lucky_number) -> {
+                luckyNumber = DRHelper.resetLuckyNumber()
+                val editor = sharedPreferences.edit()
+                editor.putInt(LUCKY_NUMBER,luckyNumber)
+                editor.apply()
+                Toast.makeText(requireContext(),"Lucky Number has been reset!", Toast.LENGTH_SHORT).show()
+            }
+            (R.id.btn_return) -> {
+                diceRollerFragmentInterface.returnHome()
+            }
+        }
+    }
+
 }
