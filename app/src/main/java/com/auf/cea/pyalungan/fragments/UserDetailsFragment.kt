@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.EditText
 import android.widget.LinearLayout
+import android.widget.Toast
 import androidx.appcompat.app.AlertDialog
 import com.auf.cea.pyalungan.PREFERENCE_NAME
 import com.auf.cea.pyalungan.R
@@ -72,7 +73,12 @@ class UserDetailsFragment : Fragment(), View.OnClickListener {
         alertDialog?.setView(editLayout)
 
         alertDialog?.setPositiveButton("Save", DialogInterface.OnClickListener{dialog,_ ->
-            val username = editUsername.text.toString()
+            var username = editUsername.text.toString()
+
+            if (username.isEmpty()) {
+                username = sharedPreferences.getString(USER_NAME,"").toString()
+                Toast.makeText(requireContext(),"Username cannot be empty!",Toast.LENGTH_SHORT).show()
+            }
 
             userDetailsInterface.onEdit(username)
             binding.txtName.text =  String.format("Name:  %s",username)
@@ -82,6 +88,7 @@ class UserDetailsFragment : Fragment(), View.OnClickListener {
 
             dialog.dismiss()
         })
+
 
         alertDialog?.setNegativeButton("Cancel", DialogInterface.OnClickListener{dialog,_ ->
             dialog.dismiss()
