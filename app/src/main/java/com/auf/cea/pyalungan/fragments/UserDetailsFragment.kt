@@ -75,7 +75,11 @@ class UserDetailsFragment : Fragment(), View.OnClickListener {
             val username = editUsername.text.toString()
 
             userDetailsInterface.onEdit(username)
+
+            // Change the username on the fragment
             binding.txtName.text =  String.format("Name:  %s",username)
+
+            // Change the username saved on sharedPreference
             val editor = sharedPreferences.edit()
             editor.putString(USER_NAME,username)
             editor.apply()

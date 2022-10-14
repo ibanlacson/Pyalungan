@@ -65,28 +65,28 @@ class MainActivity : AppCompatActivity(),
 
         override fun onResume() {
             super.onResume()
-
             modifyUserDetails(sharedPreferences.getString(USER_NAME,"")!!)
-
         }
+
         override fun onEdit(username: String) {
             Log.d(MainActivity::class.java.simpleName, username)
-
             modifyUserDetails(username)
         }
 
         private fun modifyUserDetails(username:String) {
             val headerView = navView.getHeaderView(0)
             val txtUsername = headerView.findViewById<TextView>(R.id.txt_name)
-
             txtUsername.text = username
+        }
+
+
+        override fun returnHome() {
+            //Change the content of navController to nav_home
+            findNavController(R.id.nav_host_fragment_container).navigate(R.id.nav_home)
         }
 
         override fun openNavDrawer() {
             binding.drawerLayout.openDrawer(GravityCompat.START)
         }
 
-        override fun returnHome() {
-            findNavController(R.id.nav_host_fragment_container).navigate(R.id.nav_home)
-        }
 }

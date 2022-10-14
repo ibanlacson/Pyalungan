@@ -19,12 +19,6 @@ class EnterUserActivity : AppCompatActivity(), View.OnClickListener {
 
         sharedPreferences = getSharedPreferences(PREFERENCE_NAME, Context.MODE_PRIVATE)
         binding.buttonEnter.setOnClickListener(this)
-
-        if(sharedPreferences.getString(USER_NAME,"").toString() != "") {
-            val intent = Intent(this,MainActivity::class.java)
-            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TASK or Intent.FLAG_ACTIVITY_NEW_TASK
-            startActivity(intent)
-        }
     }
 
     override fun onClick(p0: View?) {

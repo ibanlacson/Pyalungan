@@ -87,6 +87,7 @@ class RockPaperScissorGameFragment : Fragment(), View.OnClickListener {
                 val imgID = RPCHelper.getImage()
                 binding.imgComputerPlay.setImageResource(imgID)
                 computerPick = imgID
+
                 binding.btnStone.isEnabled = false
                 binding.btnPaper.isEnabled = false
                 binding.btnScissors.isEnabled = false

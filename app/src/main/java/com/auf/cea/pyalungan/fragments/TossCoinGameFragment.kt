@@ -52,7 +52,6 @@ class TossCoinGameFragment : Fragment(), View.OnClickListener {
         when(p0!!.id) {
             (R.id.btn_replay) -> {
                 object : CountDownTimer(3000,200) {
-
                     override fun onTick(p0: Long) {
                         var tossAnimate:String = ""
                         when (fauxCoin) {
