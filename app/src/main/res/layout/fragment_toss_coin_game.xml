@@ -5,6 +5,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DCDDE1"
     tools:context=".fragments.TossCoinGameFragment">
 
     <!-- TODO: Update blank fragment layout -->
@@ -49,7 +50,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:backgroundTint="#4CAF50"
-            android:text="🪙 Atcha Me! "
+            android:text="Atcha Me! "
             android:textSize="25sp"
             android:textStyle="bold" />
 
@@ -57,7 +58,7 @@
             android:id="@+id/btn_return"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:backgroundTint="#F44336"
+            android:backgroundTint="#C00000"
             android:text="Return"
             android:textSize="25sp"
             app:layout_constraintBottom_toBottomOf="parent" />

@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DCDDE1"
     tools:context=".fragments.RockPaperScissorGameFragment">
 
     <TextView
@@ -14,6 +15,7 @@
         android:textAllCaps="true"
         android:textSize="20sp"
         android:textStyle="bold"
+        android:textColor="#17264E"
         app:layout_constraintBottom_toTopOf="@+id/linearLayout"
         app:layout_constraintStart_toStartOf="@+id/linearLayout" />
 
@@ -23,6 +25,7 @@
         android:text="YOUR PICK:"
         android:textAllCaps="true"
         android:textSize="20sp"
+        android:textColor="#17264E"
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="@+id/linearLayout"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout" />
@@ -35,6 +38,7 @@
         android:textAllCaps="true"
         android:textAlignment="center"
         android:textSize="25sp"
+        android:textColor="#17264E"
         android:textStyle="bold"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
@@ -79,6 +83,7 @@
         android:text="Choose your pick:"
         android:textAllCaps="true"
         android:textSize="20sp"
+        android:textColor="#17264E"
         android:textStyle="bold"
         app:layout_constraintBottom_toTopOf="@+id/btn_group"
         app:layout_constraintEnd_toEndOf="parent"
@@ -126,7 +131,7 @@
         android:id="@+id/btn_return"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:backgroundTint="#F44336"
+        android:backgroundTint="#C00000"
         android:text="Return"
         app:layout_constraintBottom_toBottomOf="parent" />
 
