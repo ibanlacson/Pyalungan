@@ -5,6 +5,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="#DCDDE1"
     tools:context=".fragments.DiceRollerFragment">
 
     <ImageView
@@ -23,6 +24,7 @@
         android:layout_height="wrap_content"
         android:paddingLeft="15dp"
         android:paddingRight="15dp"
+        android:textColor="#17264E"
         android:text="Rock paper scissors \ngame"
         android:textAlignment="center"
         android:textAllCaps="true"
@@ -49,7 +51,7 @@
             android:layout_height="match_parent"
             android:layout_marginEnd="10dp"
             android:layout_weight="1"
-            android:backgroundTint="#3F51B5"
+            android:backgroundTint="#17264E"
             android:text="Roll Dice"
             android:textSize="18sp" />
 
@@ -68,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="match_parent"
             android:layout_weight="1"
-            android:backgroundTint="#D32215"
+            android:backgroundTint="#C00000"
             android:text="Return"
             android:textSize="18sp" />
     </LinearLayout>

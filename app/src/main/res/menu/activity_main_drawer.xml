@@ -16,7 +16,7 @@
             android:title="🎮 Rock Paper Scissors" />
         <item
             android:id="@+id/nav_toss_coin_game"
-            android:title="🪙 Toss Coin"/>
+            android:title="📀 Toss Coin"/>
         <item
             android:id="@+id/nav_dice_roller_game"
             android:title="🎲 Dice Game"/>
